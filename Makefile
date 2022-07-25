@@ -5,7 +5,7 @@ objects	:= obj/main.o
 objects	+= obj/wave.o
 
 build:$(objects)
-	gcc -o $(out) $^
+	gcc -o $(out) $^ -lwinmm
 
 obj/%.o:src/%.c
 	gcc -c -o $@ $<
