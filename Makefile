@@ -2,7 +2,7 @@
 out		:= run.exe
 
 objects	:= obj/main.o
-objects	+= obj/wave.o
+objects	+= obj/wav.o
 
 build:$(objects)
 	gcc -o $(out) $^ -lwinmm
