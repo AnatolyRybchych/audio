@@ -1,0 +1,9 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make.exe: Entering directory 'c:/Users/Velichaisyi/Desktop/audio'
+gcc -c -o obj/main.o src/main.c
+ 
+gcc -c -o obj/wav.o src/wav.c
+ 
+gcc -o run.exe obj/main.o obj/wav.o -lwinmm
+make.exe: Leaving directory 'c:/Users/Velichaisyi/Desktop/audio'
+ 

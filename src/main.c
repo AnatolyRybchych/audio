@@ -4,18 +4,27 @@
 #include <math.h>
 #include "wav.h"
 
-#define SAMPLES_CNT 100000
+#define SAMPLES_CNT 20000
 #define BITS_PER_SAMPLE 16
-#define CHANNELS_CNT 2
-#define SAMPLE_RATE 44100
+#define CHANNELS_CNT 1
+#define SAMPLE_RATE 2000
 
 int main(int argc, char const *argv[]){
 
     int16_t samples[SAMPLES_CNT * CHANNELS_CNT];
 
     for(int s = 0; s < SAMPLES_CNT; s++){
-    for(int c = 0; c < CHANNELS_CNT; c++){
-            samples[s * CHANNELS_CNT + c] = INT16_MIN * sin((double)(s) / (double)SAMPLE_RATE * M_PI * 1000.0); 
+        double val = sin((double)s * M_PI * 200 / SAMPLE_RATE);
+
+        for(int c = 0 ; c < CHANNELS_CNT; c++){
+            samples[s * CHANNELS_CNT + c] = INT16_MAX * 0.9 * val; 
+
+            long int sum = 0;
+            for(int i = 0; i < s; i++)
+                sum += samples[s * CHANNELS_CNT + c];
+            
+            samples[s * CHANNELS_CNT + c] += sin((double)sum / (double)SAMPLE_RATE * M_PI) * INT16_MAX;
+            samples[s * CHANNELS_CNT + c] = sin(samples[s * CHANNELS_CNT + c] * 0.0001) * INT16_MAX;
         }
     }
 

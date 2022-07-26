@@ -27,5 +27,6 @@ typedef struct wav{
 
 void wav_write_header(wav_header *wav, uint16_t channels_cnt, uint32_t sample_rate, uint16_t bits_per_sample, uint32_t data_size);
 bool wav_save_file(const wchar_t *filename, const wav *wave);
+bool wav_read_file(wav *wave, const wchar_t *filename, void (*store_function)(wav *wave, const wav_header *header, const void *data));
 
 #endif //__WAWE_H_

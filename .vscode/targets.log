@@ -8,7 +8,7 @@ This program is built by Equation Solution <http://www.Equation.com>.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 25 20:56:30 2022
+# Make data base, printed on Tue Jul 26 11:40:08 2022
 
 # Variables
 
@@ -43,7 +43,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupp
 # environment
 ONEDRIVE = C:\Users\Velichaisyi\OneDrive
 # makefile (from 'makefile', line 5)
-objects := obj/main.o obj/wave.o
+objects := obj/main.o obj/wav.o
 # environment
 MSMPI_BIN = C:\Program Files\Microsoft MPI\Bin\
 # environment
@@ -57,7 +57,7 @@ PROGRAMW6432 = C:\Program Files
 # environment
 PROGRAMDATA = C:\ProgramData
 # environment
-VSCODE_CWD = C:\Users\Velichaisyi\Desktop\audio
+VSCODE_CWD = C:\Users\Velichaisyi\Desktop
 # environment
 OPENCV_DIR = C:\opencv\build\
 # default
@@ -81,7 +81,7 @@ ELECTRON_RUN_AS_NODE = 1
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10284_CITGPVCSEANDMANH
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_3108_THEZDVTBIMQNKXDE
 # makefile (from 'makefile', line 2)
 out := run.exe
 # environment
@@ -197,7 +197,7 @@ LANG = C
 # environment
 PROCESSOR_LEVEL = 6
 # environment
-VSCODE_PID = 10284
+VSCODE_PID = 3108
 # environment
 USERDOMAIN_ROAMINGPROFILE = HOME-PC
 # variable set hash-table stats:
@@ -209,8 +209,8 @@ USERDOMAIN_ROAMINGPROFILE = HOME-PC
 
 # Directories
 
-# . (key c:/Users/Velichaisyi/Desktop/audio, mtime 1658771789ll): 9 files, no impossibilities.
-# src (key c:/Users/Velichaisyi/Desktop/audio/src, mtime 1658763295ll): No files, no impossibilities so far.
+# . (key c:/Users/Velichaisyi/Desktop/audio, mtime 1658800436ll): 9 files, no impossibilities.
+# src (key c:/Users/Velichaisyi/Desktop/audio/src, mtime 1658789798ll): No files, no impossibilities so far.
 
 # 9 files, no impossibilities in 2 directories.
 
@@ -246,22 +246,16 @@ obj/main.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-25 19:22:29
+#  Last modified 2022-07-26 01:56:38
 #  File has been updated.
 #  Successfully updated.
 
-build: obj/main.o obj/wave.o
+build: obj/main.o obj/wav.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 8):
 	gcc -o $(out) $^ -lwinmm
-
-# Not a target:
-obj/wave.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
 
 run: build
 #  Implicit rule search has not been done.
@@ -269,6 +263,12 @@ run: build
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 14):
 	./$(out)
+
+# Not a target:
+obj/wav.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # files hash-table stats:
 # Load=8/1024=1%, Rehash=0, Collisions=0/21=0%
@@ -278,12 +278,12 @@ run: build
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 18 / storage = 123 B / avg = 6 B
-# current buf: size = 8162 B / used = 123 B / count = 18 / avg = 6 B
+# strcache buffers: 1 (0) / strings = 18 / storage = 122 B / avg = 6 B
+# current buf: size = 8162 B / used = 122 B / count = 18 / avg = 6 B
 
 # strcache performance: lookups = 25 / hit rate = 28%
 # hash-table stats:
 # Load=18/8192=0%, Rehash=0, Collisions=1/25=4%
-# Finished Make data base on Mon Jul 25 20:56:30 2022
+# Finished Make data base on Tue Jul 26 11:40:08 2022
 
  
