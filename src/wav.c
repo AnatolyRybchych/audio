@@ -1,5 +1,6 @@
 #include "wav.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define fwrite_arr(_struct, field, file) fwrite((_struct).field, sizeof((_struct).field[0]), sizeof((_struct).field) / sizeof((_struct).field[0]), file)
 #define fread_arr(_struct, field, file) fread((_struct).field, sizeof((_struct).field[0]), sizeof((_struct).field) / sizeof((_struct).field[0]), file)
@@ -49,7 +50,7 @@ void wav_write_header(wav_header *wav, uint16_t channels_cnt, uint32_t sample_ra
 }
 
 bool wav_save_file(const wchar_t *filename, const wav *wave){
-    FILE *file = _wfopen(filename, L"w");
+    FILE *file = _wfopen(filename, L"wb");
     if(file == NULL) return false;
 
     fwrite_arr(wave->header, riff, file);
@@ -70,30 +71,41 @@ bool wav_save_file(const wchar_t *filename, const wav *wave){
         fwrite((char *)wave->data + block * wave->header.block_align, wave->header.block_align, 1, file);
     }
 
+
+    fclose(file);
     return true;
 }
 
 bool wav_read_file(wav *wave, const wchar_t *filename, void (*store_function)(wav *wave, const wav_header *header, const void *data)){
-    FILE *file = _wfopen(filename, L"w");
+    FILE *file = _wfopen(filename, L"rb");
     if(file == NULL) return false;
 
-    fread_arr(wave->header, riff, file);
-    fread_element(wave->header, chunk_size, file);
-    fread_arr(wave->header, wave, file);
-    fread_arr(wave->header, fmt, file);
-    fread_element(wave->header, fmt_size, file);
-    fread_element(wave->header, fmt_type, file);
-    fread_element(wave->header, channels_cnt, file);
-    fread_element(wave->header, sample_rate, file);
-    fread_element(wave->header, byte_rate, file);
-    fread_element(wave->header, block_align, file);
-    fread_element(wave->header, bits_per_sample, file);
-    fread_arr(wave->header, data, file);
-    fread_element(wave->header, data_size, file);
+    wav_header hdr;
 
-    for(int block = 0; block < wave->header.data_size / wave->header.block_align; block++){
-        fread((char *)wave->data + block * wave->header.block_align, wave->header.block_align, 1, file);
+    fread_arr(hdr, riff, file);
+    fread_element(hdr, chunk_size, file);
+    fread_arr(hdr, wave, file);
+    fread_arr(hdr, fmt, file);
+    fread_element(hdr, fmt_size, file);
+    fread_element(hdr, fmt_type, file);
+    fread_element(hdr, channels_cnt, file);
+    fread_element(hdr, sample_rate, file);
+    fread_element(hdr, byte_rate, file);
+    fread_element(hdr, block_align, file);
+    fread_element(hdr, bits_per_sample, file);
+    fread_arr(hdr, data, file);
+    fread_element(hdr, data_size, file);
+
+    void *data = malloc(hdr.data_size);
+
+    for(int block = 0; block < hdr.data_size / hdr.block_align; block++){
+        fread((char *)data + block * hdr.block_align, hdr.block_align, 1, file);
     }
+
+    store_function(wave, &hdr, data);
+
+    free(data);
+    fclose(file);
     return true;
 }
 

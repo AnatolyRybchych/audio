@@ -9,47 +9,41 @@
 #define CHANNELS_CNT 1
 #define SAMPLE_RATE 2000
 
+void print_wav_header(const wav_header *hdr);
+void alloc_waveform(wav *wave, const wav_header *header, const void *data);
+int main(int argc, char const *argv[]);
+
+void print_wav_header(const wav_header *hdr){
+    printf("riff: \t%.4s\n", hdr->riff);
+    printf("chunk_size: \t%i\n", (int)hdr->chunk_size);
+    printf("wave: \t%.4s\n", hdr->wave);
+    printf("fmt: \t%s\n", hdr->fmt);
+    printf("fmt_size: \t%i\n", (int)hdr->fmt_size);
+    printf("fmt_type: \t%i\n", (int)hdr->fmt_type);
+    printf("channels_cnt: \t%i\n", (int)hdr->channels_cnt);
+    printf("sample_rate: \t%i\n", (int)hdr->sample_rate);
+    printf("byte_rate: \t%i\n", (int)hdr->byte_rate);
+    printf("block_align: \t%i\n", (int)hdr->block_align);
+    printf("bits_per_sample: \t%i\n", (int)hdr->bits_per_sample);
+    printf("data: \t%.4s\n", hdr->data);
+    printf("data_size: \t%i\n", (int)hdr->data_size);
+}
+
+void alloc_waveform(wav *wave, const wav_header *header, const void *data){
+    wave->header = *header;
+    wave->data = malloc(header->data_size);
+    memcpy(wave->data, data, wave->header.data_size);
+}
+
 int main(int argc, char const *argv[]){
-
-    int16_t samples[SAMPLES_CNT * CHANNELS_CNT];
-
-    for(int s = 0; s < SAMPLES_CNT; s++){
-        double val = sin((double)s * M_PI * 200 / SAMPLE_RATE);
-
-        for(int c = 0 ; c < CHANNELS_CNT; c++){
-            samples[s * CHANNELS_CNT + c] = INT16_MAX * 0.9 * val; 
-
-            long int sum = 0;
-            for(int i = 0; i < s; i++)
-                sum += samples[s * CHANNELS_CNT + c];
-            
-            samples[s * CHANNELS_CNT + c] += sin((double)sum / (double)SAMPLE_RATE * M_PI) * INT16_MAX;
-            samples[s * CHANNELS_CNT + c] = sin(samples[s * CHANNELS_CNT + c] * 0.0001) * INT16_MAX;
-        }
-    }
-
     wav waveform;
 
-    waveform.data = &samples;
-    wav_write_header(&waveform.header, CHANNELS_CNT, SAMPLE_RATE, BITS_PER_SAMPLE, CHANNELS_CNT * BITS_PER_SAMPLE * SAMPLES_CNT / 8);
+    wav_read_file(&waveform, L"./test.wav", alloc_waveform);
 
-    printf("riff: \t%.4s\n", waveform.header.riff);
-    printf("chunk_size: \t%i\n", (int)waveform.header.chunk_size);
-    printf("wave: \t%.4s\n", waveform.header.wave);
-    printf("fmt: \t%s\n", waveform.header.fmt);
-    printf("fmt_size: \t%i\n", (int)waveform.header.fmt_size);
-    printf("fmt_type: \t%i\n", (int)waveform.header.fmt_type);
-    printf("channels_cnt: \t%i\n", (int)waveform.header.channels_cnt);
-    printf("sample_rate: \t%i\n", (int)waveform.header.sample_rate);
-    printf("byte_rate: \t%i\n", (int)waveform.header.byte_rate);
-    printf("block_align: \t%i\n", (int)waveform.header.block_align);
-    printf("bits_per_sample: \t%i\n", (int)waveform.header.bits_per_sample);
-    printf("data: \t%.4s\n", waveform.header.data);
-    printf("data_size: \t%i\n", (int)waveform.header.data_size);
+    print_wav_header(&waveform.header);
 
-    sndPlaySound((LPCSTR)&waveform, SND_MEMORY | SND_SYNC );
+    sndPlaySoundW((LPCWSTR)&waveform, SND_MEMORY | SND_SYNC );
     wav_save_file(L"./test.wav", &waveform);
-
 
     return 0;
 }
